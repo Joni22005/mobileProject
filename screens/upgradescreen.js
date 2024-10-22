@@ -33,7 +33,7 @@ const UpgradeScreen = ({ clickCount, setClickCount, setClickPower }) => {
 
       // Check if this is the last upgrade
       if (upgradeId === '6') { // Check if it's the last upgrade
-        Alert.alert("Congrats!", "You got a job! You beat the game!!"); // Show alert
+        Alert.alert("Congrats!", "You got a job! You beat the game!"); // Show alert
       }
     } else {
       alert('Not enough clicks to purchase this upgrade!');
