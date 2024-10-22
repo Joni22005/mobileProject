@@ -66,7 +66,7 @@ const App = () => {
             userId={userId}
             setUserId={setUserId}
             syncUserDataWithCloud={() => syncUserDataWithCloud(clickCount, clickPower, userId, setUserId, username, setUsername, password, setPassword)} 
-            fetchUserDataFromCloud={() => fetchUserDataFromCloud(userId, setClickCount, setClickPower, username, setUsername, password, setPassword)}
+            fetchUserDataFromCloud={() => fetchUserDataFromCloud(userId, setUserId, setClickCount, setClickPower, username, setUsername, password, setPassword)}
           />
         </View>
 

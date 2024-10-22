@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { addUserCredentials } from '../database/db';  // Import the function to save credentials
 import styles from '../styles/styles.js';
@@ -6,7 +6,8 @@ import styles from '../styles/styles.js';
 const LoginScreen = ({ syncUserDataWithCloud, fetchUserDataFromCloud, fetchUserIdFromCloud, clickCount, clickPower, userId, setUserId }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);  // Add state for login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [fetchedUserId, setFetchedUserId] = useState(null);  // State to store fetched userId
 
   const handleSync = () => {
     syncUserDataWithCloud(clickCount, clickPower, userId, setUserId);
@@ -20,10 +21,13 @@ const LoginScreen = ({ syncUserDataWithCloud, fetchUserDataFromCloud, fetchUserI
           console.log('Credentials saved successfully');
 
           // Fetch the userId without overwriting any data
-          fetchUserIdFromCloud(username, password, (fetchedUserId) => {
-            if (fetchedUserId) {
-              setUserId(fetchedUserId);  // Update userId in state
-              setIsLoggedIn(true);  // Set the user as logged in
+          fetchUserIdFromCloud(username, password, (userId) => {
+            if (userId) {
+              setFetchedUserId(userId);  // Store the fetched userId in state
+              setUserId(userId);          // Update userId in state
+              setIsLoggedIn(true);        // Set the user as logged in
+            } else {
+              console.error('Failed to fetch userId from cloud');
             }
           });
         })
@@ -34,6 +38,13 @@ const LoginScreen = ({ syncUserDataWithCloud, fetchUserDataFromCloud, fetchUserI
       console.log('Please enter both username and password');
     }
   };
+
+  // Use useEffect to fetch user data when logged in
+  useEffect(() => {
+    if (isLoggedIn && fetchedUserId) {
+      fetchUserDataFromCloud(fetchedUserId, clickCount, clickPower, setUserId, username, password);
+    }
+  }, [isLoggedIn, fetchedUserId]);  // Dependencies to trigger the effect
 
   return (
     <View style={styles.container}>
