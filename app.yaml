@@ -1,0 +1,12 @@
+runtime: nodejs18  # Specify the Node.js version
+instance_class: F1  # Optional: Use F1 instance (cost-effective for small apps)
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 5
+
+env_variables:
+  MONGODB_URI: 'mongodb+srv://username:DBDbaP71OFiWAJMx@cluster0.94grxbu.mongodb.net/project?retryWrites=true&w=majority'  # Set environment variables
+
+entrypoint: node server/server.js
